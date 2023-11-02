@@ -1,23 +1,16 @@
-authorization {
-  cache {
-    enable = true
-    max_size = 32
-    ttl = 1m
-  }
-  deny_action = ignore
-  no_match = allow
-  sources = [
-    {
-      enable = true
-      path = "${EMQX_ETC_DIR}/acl.conf"
-      type = file
-    }
-  ]
-}
 rule_engine {
   ignore_sys_message = true
   jq_function_default_timeout = 10s
-  rules {}
+  rules {
+    rule_n8cs {
+      actions = [
+        {function = console}
+      ]
+      description = ""
+      metadata {created_at = 1698719082653}
+      sql = "SELECT\n  *,\n  mongo_date(timestamp) as timestamp,\n  json_encode(payload) as payload\nFROM\n  \"t/#\""
+    }
+  }
 }
 sysmon {
   os {

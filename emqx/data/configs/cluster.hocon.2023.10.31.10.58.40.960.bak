@@ -8,6 +8,18 @@ authorization {
   no_match = allow
   sources = [
     {
+      collection = test
+      database = test
+      filter {username = "${username}"}
+      mongo_type = single
+      pool_size = 8
+      server = "127.0.0.1:27017"
+      srv_record = false
+      ssl {enable = false, verify = verify_peer}
+      topology {connect_timeout_ms = 20s}
+      type = mongodb
+    },
+    {
       enable = true
       path = "${EMQX_ETC_DIR}/acl.conf"
       type = file
