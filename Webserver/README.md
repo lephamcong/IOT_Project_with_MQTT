@@ -1,9 +1,9 @@
-# Tên Dự Án
+# Project
 
 HTTP server connect MQTT broker
 
-### Cài đặt
+### Install
 
-npm install
-npm run watch
-npm start
+npm install <br/>
+npm run watch <br/>
+npm start <br/>
