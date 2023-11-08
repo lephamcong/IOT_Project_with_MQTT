@@ -124,7 +124,7 @@ rule_engine {
       description = ""
       enable = true
       metadata {created_at = 1699438869814}
-      sql = "SELECT\n  clientid,\n  timestamp,\n  payload.temperature as temperature,\n  payload.pressure as pressure,\n  payload.wind_speed as wind_speed,\n  payload.power_output as power_output\nFROM\n  \"dataIncoming/#\""
+      sql = "SELECT\n  clientid as turbine_id,\n  payload.temperature as temperature,\n  payload.pressure as pressure,\n  payload.power_output as power_output\nFROM\n  \"dataIncoming/#\""
     }
   }
 }
