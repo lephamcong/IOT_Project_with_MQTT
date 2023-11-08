@@ -1,17 +1,25 @@
-const path = require("path");
+const path = require("path"); // lấy đường dẫn thư mục
 const express = require("express");
-const morgan = require("morgan");
-const { engine } = require("express-handlebars");
-const app = express();
-const port = 5035;
+const morgan = require("morgan"); // HTTp logger
+const { engine } = require("express-handlebars"); // handle view
+const route = require("./routes"); //router
+const db = require("./config/db"); // mongo database
+// connect to mongodb
+db.connect();
 
-const staticPath = path.join(__dirname, "/public");
+const app = express();
+const port = 9000;
+
+const staticPath = path.join(__dirname, "public");
 app.use(express.static(staticPath)); //static file
+
+app.use(express.urlencoded({ extended: true })); //midleware xử lí submit từ thẻ dạng form phía html và chuyển vào req.body
+app.use(express.json()); //midleware xử lí dữ liệu từ các thư viện javascript (XMLhttpRequest, fetch, axios, ...)
 
 // HTTp logger
 app.use(morgan("combined"));
 
-// template engine
+// template engine, render views
 app.engine(
   "hbs",
   engine({
@@ -19,11 +27,11 @@ app.engine(
   })
 );
 app.set("view engine", "hbs");
-app.set("views", path.join(__dirname, "resources/views"));
+app.set("views", path.join(__dirname, "resources", "views")); // chỉ định đường dẫn thư mục views
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
+// Routes init
+route(app);
+
 app.listen(port, (request, respond) => {
   console.log(`Our server is live on ${port}. Yay!`);
 });
