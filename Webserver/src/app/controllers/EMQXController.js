@@ -1,7 +1,6 @@
 const Turbine = require("../models/Turbine");
 const Data = require("../models/Data");
 const {
-  multipleMongooseToObject,
   handleReqConnect,
   convertTo_id,
   handleReqData,
@@ -10,8 +9,10 @@ class EMQXController {
   //[PUT] /emqx/dataIncoming
   async dataIncoming(req, res) {
     try {
+      const _id = req.body.clientid;
       const message = handleReqData(req.body); // xử lí lại data, tạo _id từ trường clientid và timestamp nhận được
-      await Data.insertMany([message]);
+      await Data.insertMany([message]); // đẩy dữ liệu vào datas collection
+      await Turbine.updateOne({ _id: _id }, { $push: { datas: message._id } }); // cầm cái _id của datas collection ném vào mảng datas để lưu trữ các document data liên quan
       // console.log("Data", message);
       res.redirect("/");
     } catch (error) {

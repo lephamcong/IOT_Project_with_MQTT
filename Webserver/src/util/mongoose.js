@@ -18,7 +18,6 @@ module.exports = {
   handleReqData: (object) => {
     object = module.exports.convertTo_id(object);
     object._id = object._id + "_" + object.timestamp;
-    delete object.timestamp;
     return object;
   },
 };
