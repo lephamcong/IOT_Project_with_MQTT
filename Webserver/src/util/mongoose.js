@@ -12,7 +12,7 @@ module.exports = {
   },
   handleReqConnect: (object) => {
     object = module.exports.convertTo_id(object);
-    object.status = object.status.replace("client.", "");
+    object.statusNetwork = object.statusNetwork.replace("client.", "");
     return object;
   },
   handleReqData: (object) => {
