@@ -10,23 +10,18 @@ const Turbine = new Schema(
       enum: ["connected", "disconnected"],
     },
     location: {
-      address: { type: String },
-      coordinates: {
-        type: [Number],
-      },
+      type: [Number],
     },
-    capacity: { type: Number },
+    power: { type: Number },
     installed_date: { type: String },
     operatingStatus: {
       type: String,
       enum: ["Active", "Inactive", "Maintenance"],
     },
-    maintenanceHistory: [
-      {
-        date: { type: Date },
-        description: { type: String },
-      },
-    ],
+    maintenanceHistory: {
+      date: { type: String },
+      description: { type: String },
+    },
     datas: { type: [Object] }, // Mảng chứa các _id của data liên quan
   },
   { timestamps: true }

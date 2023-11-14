@@ -8,7 +8,7 @@ const db = require("./config/db"); // mongo database
 db.connect();
 
 const app = express();
-const port = 9000;
+const port = 3000;
 
 const staticPath = path.join(__dirname, "public");
 app.use(express.static(staticPath)); //static file
