@@ -5,7 +5,7 @@ const ObjectId = Schema.ObjectId;
 const Data = new Schema(
   {
     _id: { type: String },
-    temperature: { type: Number },
+    engineTemperature: { type: Number },
     pressure: { type: Number },
     wind_speed: { type: Number },
     power_output: { type: Number },

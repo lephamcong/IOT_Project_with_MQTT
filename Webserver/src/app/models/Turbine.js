@@ -5,11 +5,29 @@ const ObjectId = Schema.ObjectId;
 const Turbine = new Schema(
   {
     _id: { type: String },
-    status: { type: String },
-    location: { type: String },
+    statusNetwork: {
+      type: String,
+      enum: ["connected", "disconnected"],
+    },
+    location: {
+      address: { type: String },
+      coordinates: {
+        type: [Number],
+      },
+    },
     capacity: { type: Number },
     installed_date: { type: String },
-    datas: { type: Array }, // Mảng chứa các _id của data liên quan
+    operatingStatus: {
+      type: String,
+      enum: ["Active", "Inactive", "Maintenance"],
+    },
+    maintenanceHistory: [
+      {
+        date: { type: Date },
+        description: { type: String },
+      },
+    ],
+    datas: { type: [Object] }, // Mảng chứa các _id của data liên quan
   },
   { timestamps: true }
 );

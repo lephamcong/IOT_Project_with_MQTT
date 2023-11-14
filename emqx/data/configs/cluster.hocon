@@ -110,20 +110,23 @@ rule_engine {
       description = ""
       enable = true
       metadata {created_at = 1699440428202}
-      sql = "SELECT\n  clientid as clientid,\n  payload.location as location,\n  payload.capacity as capacity,\n  payload.installed_date as installed_date\nFROM\n  \"Init/#\""
+      name = ""
+      sql = "SELECT\n  clientid as clientid,\n  payload.location as location,\n  payload.capacity as capacity,\n  payload.installed_date as installed_date,\n  payload.operatingStatus as operatingStatus,\n  payload.maintenanceHistory as maintenanceHistory\nFROM\n  \"Init/#\""
     }
     connectStatus {
       actions = ["webhook:ConnectStatus"]
       description = ""
       enable = true
       metadata {created_at = 1699441145642}
-      sql = "SELECT\n  clientid,\n  event as status\nFROM\n  \"$events/client_connected\",\n  \"$events/client_disconnected\""
+      name = ""
+      sql = "SELECT\n  clientid,\n  event as statusNetwork\nFROM\n  \"$events/client_connected\",\n  \"$events/client_disconnected\""
     }
     dataIncoming {
       actions = ["webhook:dataIncoming"]
       description = ""
       enable = true
       metadata {created_at = 1699438869814}
+      name = ""
       sql = "SELECT\n  clientid,\n  timestamp,\n  payload.temperature as temperature,\n  payload.pressure as pressure,\n  payload.wind_speed as wind_speed,\n  payload.power_output as power_output\nFROM\n  \"dataIncoming/#\""
     }
   }
