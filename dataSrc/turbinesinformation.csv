@@ -1,0 +1,13 @@
+_id,location.address,location.coordinates[0],location.coordinates[1],power,installed_date,operatingStatus,maintenanceHistory.date,maintenanceHistory.description
+QN001,123 Main St,12.345,67.890,100,2023-01-01,Active,2023-02-01,Routine maintenance
+QN002,456 Oak St,23.456,78.901,150,2023-02-01,Inactive,2023-03-01,Minor repair
+QN003,789 Pine St,34.567,89.012,120,2023-03-01,Active,2023-04-01,Major repair
+QN004,234 Elm St,45.678,90.123,200,2023-04-01,Inactive,2023-05-01,Regular checkup
+QN005,567 Maple St,56.789,91.234,180,2023-05-01,Active,2023-06-01,Minor repair
+QN006,890 Birch St,67.890,92.345,250,2023-06-01,Inactive,2023-07-01,Replacement of parts
+DN001,123 Cedar St,78.901,93.456,300,2023-07-01,Active,2023-08-01,Regular checkup
+DN002,456 Walnut St,89.012,94.567,140,2023-08-01,Inactive,2023-09-01,Minor repair
+DN003,789 Oakwood St,90.123,95.678,180,2023-09-01,Active,2023-10-01,Routine maintenance
+DN004,234 Pineapple St,91.234,96.789,200,2023-10-01,Inactive,2023-11-01,Replacement of parts
+DN005,567 Cherry St,92.345,97.890,160,2023-11-01,Active,2023-12-01,Minor repair
+DN006,890 Orange St,93.456,98.901,220,2023-12-01,Inactive,2024-01-01,Major repair
