@@ -10,7 +10,8 @@ const Turbine = new Schema(
       enum: ["connected", "disconnected"],
     },
     location: {
-      type: [Number],
+      address: { type: String },
+      coordinates: { type: [Number] },
     },
     power: { type: Number },
     installed_date: { type: String },

@@ -1,5 +1,7 @@
 const path = require("path"); // lấy đường dẫn thư mục
 const express = require("express");
+const { createServer } = require("http");
+
 const morgan = require("morgan"); // HTTp logger
 const { engine } = require("express-handlebars"); // handle view
 const route = require("./routes"); //router
@@ -8,7 +10,10 @@ const db = require("./config/db"); // mongo database
 db.connect();
 
 const app = express();
-const port = 3000;
+const port = 9001;
+const { Server } = require("socket.io");
+const httpServer = createServer(app);
+const io = new Server(httpServer, {});
 
 const staticPath = path.join(__dirname, "public");
 app.use(express.static(staticPath)); //static file
@@ -32,6 +37,10 @@ app.set("views", path.join(__dirname, "resources", "views")); // chỉ định �
 // Routes init
 route(app);
 
-app.listen(port, (request, respond) => {
+io.on("connection", (socket) => {
+  console.log("Socket connected");
+});
+
+httpServer.listen(port, (request, respond) => {
   console.log(`Our server is live on ${port}. Yay!`);
 });
