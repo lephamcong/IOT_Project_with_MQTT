@@ -62,7 +62,7 @@ const startApp = async () => {
             action(clients[i]);
           }
           console.log("Publish Data successfully!");
-        }, 5000);
+        }, 20000);
         break;
 
       case clientPublishInit:
