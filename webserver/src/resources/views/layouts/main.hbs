@@ -1,74 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MQTT Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with a Dashboard for Node.js.">
+    <meta name="author" content="Creative Tim">
+    <title>Argon Dashboard - Free Node.js Dashboard</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/content/dist/img/mqtt-logo-ver.jpg" type="image/x-icon" />
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/content/plugins/fontawesome-free/css/all.min.css" />
+    <link href="/img/brand/favicon.png" rel="icon" type="image/png">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
-    <!-- jsGrid -->
-    <link rel="stylesheet" href="/content//plugins/jsgrid/jsgrid.min.css" />
-    <link rel="stylesheet" href="/content//plugins/jsgrid/jsgrid-theme.min.css" />
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/content/dist/css/adminlte.min.css" />
+    <!-- Icons -->
+    <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link href="/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- Argon CSS -->
+    <link type="text/css" href="/css/argon.css" rel="stylesheet">
+    {{!-- My CSS --}}
+    <link rel="stylesheet" href="/css/app.css">
+    {{!-- jquery --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-        {{>header}}
+<body>
     {{{body}}}
-    </div>
-
-
-    
-    <!-- jQuery -->
-    <script src="/content/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="/content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- jsGrid -->
-    <script src="/content/plugins/jsgrid/demos/db.js"></script>
-    <script src="/content/plugins/jsgrid/jsgrid.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="/content/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="/content/dist/js/demo.js"></script>
-    <!-- Page specific script -->
-    <script>
-        $(function () {
-            $("#jsGrid1").jsGrid({
-                height: "100%",
-                width: "100%",
-
-                sorting: true,
-                paging: true,
-
-                data: db.clients,
-
-                fields: [
-                    { name: "ID", type: "text", width: 50 },
-                    { name: "Vị trí", type: "number", width: 150 },
-                    { name: "Công suất", type: "text", width: 150 },
-                    {
-                        name: "Ngày lắp đặt",
-                        type: "select",
-                        items: db.countries,
-                        valueField: "Id",
-                        textField: "Name",
-                        width: 100,
-                    },
-                    { name: "Trạng thái", type: "checkbox", title: "Trạng thái" },
-                ],
-            });
-        });
-    </script>
 </body>
 
 </html>

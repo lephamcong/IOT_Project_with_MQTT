@@ -23,7 +23,6 @@ const Turbine = new Schema(
       date: { type: String },
       description: { type: String },
     },
-    datas: { type: [Object] }, // Mảng chứa các _id của data liên quan
   },
   { timestamps: true }
 );

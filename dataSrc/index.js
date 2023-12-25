@@ -4,7 +4,7 @@ const opt = require("minimist")(process.argv.slice(2)); // thư viện dùng cho
 opt.submode = opt.submode || false;
 opt.message = opt.message || JSON.stringify({ msg: "Hello" });
 opt.topic = opt.topic || "/mqttjs-bench";
-opt.clients = opt.clients || 12;
+opt.clients = opt.clients || 10;
 module.exports = opt.clients;
 
 var clientDatas;
@@ -62,7 +62,7 @@ const startApp = async () => {
             action(clients[i]);
           }
           console.log("Publish Data successfully!");
-        }, 20000);
+        }, 10000);
         break;
 
       case clientPublishInit:

@@ -6,7 +6,7 @@ async function startdataset() {
   try {
     turbinesInformations = await readTurbinesInformation();
     // // Tạo mảng client data
-    clientDatas = Array.from({ length: 12 }, (_, index) =>
+    clientDatas = Array.from({ length: 30 }, (_, index) =>
       initClientData(turbinesInformations[index]._id)
     );
     // console.log(clientDatas);
@@ -18,8 +18,8 @@ async function startdataset() {
 // startdataset();
 // Hàm để tạo một đối tượng thông tin ngẫu nhiên cho mỗi client
 function createRandomClientData(clientID) {
-  const engineTemperature = (Math.random() * 10 + 30).toFixed(1); // Nhiệt độ ngẫu nhiên từ 10 đến 40 độ C
-  const pressure = (Math.random() * 20 + 60).toFixed(1); // Độ ẩm ngẫu nhiên từ 60% đến 80%
+  const engineTemperature = (Math.random() * 20 + 40).toFixed(1); // Nhiệt độ ngẫu nhiên từ 40 đến 70 độ C
+  const pressure = (Math.random() * 20 + 1000).toFixed(1); // áp suất không khí
   const wind_speed = (Math.random() * 20 + 5).toFixed(1); // Tốc độ gió ngẫu nhiên từ 5 m/s đến 25 m/s
   const power_output = (Math.random() * 10 + 80).toFixed(1); // Dung lượng hoạt động từ 80% đến 90%
 

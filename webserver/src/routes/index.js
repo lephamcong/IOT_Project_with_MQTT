@@ -1,8 +1,8 @@
-const emqxRoute = require("./emqxRoute");
-const showRoute = require("./showRoute");
+const emqxRoute = require("./emqx.routes");
+const webRoute = require("./web.routes");
 
 function route(app) {
   app.use("/emqx", emqxRoute);
-  app.use("/show", showRoute);
+  app.use("/", webRoute);
 }
 module.exports = route;

@@ -16,8 +16,12 @@ module.exports = {
     return object;
   },
   handleReqData: (object) => {
-    object = module.exports.convertTo_id(object);
-    object._id = object._id + "_" + object.timestamp;
+    object.turbine_id = object.clientid;
+    return object;
+  },
+  handleTimestamp: (object) => {
+    const timestamp = new Date(object.timestamp);
+    object.timestamp = timestamp;
     return object;
   },
 };

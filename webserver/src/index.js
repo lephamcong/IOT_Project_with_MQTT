@@ -24,8 +24,15 @@ app.engine(
   "hbs",
   engine({
     extname: ".hbs",
+    helpers: {
+      sum: (a, b) => a + b,
+      compare: (param1, param2) => param1 === param2,
+      json: (context) => JSON.stringify(context),
+      last: (arr) => arr[arr.length - 1],
+    },
   })
 );
+
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views")); // chỉ định đường dẫn thư mục views
 
