@@ -14,14 +14,14 @@
                     <div class="card-header bg-transparent">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h6 class="text-uppercase text-light ls-1 mb-1">Today</h6>
-                                <h2 id="dashboard-chart-title" class="text-white mb-0">Temperature (℃)</h2>
+                                <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
+                                <h2 class="dashboard-chart-title text-white mb-0">Temperature (℃)</h2>
                             </div>
                             <div class="col">
                                 <ul class="nav nav-pills justify-content-end">
                                     <li class="nav-item mr-2 mr-md-0">
                                         <select id="customSelect" class="custom-select">
-                                            {{#each datas}}
+                                            {{#each allDatas}}
                                             <option value="{{this.date}}">{{this.date}}</option>
                                             {{/each}}
                                         </select>
@@ -50,15 +50,15 @@
                     <div class="card-header bg-transparent">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                                <h2 class="mb-0">Total orders</h2>
+                                <h6 class="text-uppercase text-muted ls-1 mb-1">Weekly Average</h6>
+                                <h2 class="dashboard-chart-title mb-0">Temperature (℃)</h2>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <!-- Chart -->
                         <div class="chart">
-                            <canvas id="chart-orders" class="chart-canvas"></canvas>
+                            <canvas id="chart-data-avg" class="chart-canvas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,8 @@
                                 <h3 class="mb-0">Maintenance History</h3>
                             </div>
                             <div class="col text-right">
-                                <a href="#!" class="btn btn-sm btn-primary">See all</a>
+                                <a href="#!" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#maintenanceModal">New plan</a>
                             </div>
                         </div>
                     </div>
@@ -89,76 +90,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#each maintenance}}
                                 <tr>
                                     <th scope="row">
-                                        /argon/
+                                        {{this.type}}
                                     </th>
                                     <td>
-                                        4,569
+                                        {{this.description}}
                                     </td>
                                     <td>
-                                        340
+                                        {{this.responsible}}
                                     </td>
                                     <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 46,53%
+                                        {{this.startDay}} <i class="fa-solid fa-arrow-right text-success m-1"></i>
+                                        {{this.endDay}}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/index.html
-                                    </th>
-                                    <td>
-                                        3,985
-                                    </td>
-                                    <td>
-                                        319
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/charts.html
-                                    </th>
-                                    <td>
-                                        3,513
-                                    </td>
-                                    <td>
-                                        294
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> 36,49%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/tables.html
-                                    </th>
-                                    <td>
-                                        2,050
-                                    </td>
-                                    <td>
-                                        147
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 50,87%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/profile.html
-                                    </th>
-                                    <td>
-                                        1,795
-                                    </td>
-                                    <td>
-                                        190
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-danger mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
+                                {{/each}}
                             </tbody>
                         </table>
                     </div>
@@ -220,9 +168,21 @@
                                     <th scope="row">
                                         Status
                                     </th>
-                                    <td>
+                                    {{#if (compare turbine.operatingStatus "Active")}}
+                                    <td style="color: #2FBD2C;">
                                         {{turbine.operatingStatus}}
                                     </td>
+                                    {{/if}}
+                                    {{#if (compare turbine.operatingStatus "Inactive")}}
+                                    <td style="color: #BA2020;">
+                                        {{turbine.operatingStatus}}
+                                    </td>
+                                    {{/if}}
+                                    {{#if (compare turbine.operatingStatus "Maintenance")}}
+                                    <td style="color: #BABA20;">
+                                        {{turbine.operatingStatus}}
+                                    </td>
+                                    {{/if}}
                                 </tr>
                             </tbody>
                         </table>
@@ -234,20 +194,70 @@
         {{>footer}}
     </div>
 </div>
+
+
+<div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action='/maintenance/{{turbine._id}}' method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">MAINTENANCE PLAN</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Type:</h5>
+                    <select name="type" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option value="Preventive" selected>Periodic Maintenance</option>
+                        <option value="Corrective">Corrective </option>
+                        <option value="Upgrade">Upgrade </option>
+                    </select>
+                    <div class="mb-3">
+                        <h5 style="margin-top: 10px;">Description:</h5>
+                        <input name="description" type="text" class="form-control" id="exampleFormControlInput1"
+                            placeholder="...">
+                    </div>
+                    <div class="mb-3">
+                        <h5 style="margin-top: 10px;">Responsible person:</h5>
+                        <input name="responsible" type="text" class="form-control" id="exampleFormControlInput1"
+                            placeholder="...">
+                    </div>
+                    <div class="mb-3">
+                        <h5 style="margin-top: 10px;">Start Day:</h5>
+                        <input name="startDay" type="date" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <h5 style="margin-top: 10px;">End Day:</h5>
+                        <input name="endDay" type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- Include scripts -->
 <script>
-    var datass = {{{ json datas }}};
-    const dates = datass.map(item => item.date);
+    var allDatas = {{{ json allDatas }}};
+    const dates = allDatas.map(item => item.date);
+    var datas = allDatas[0];
 
-    var datas = datass[0];
+    var avg_temperatures = [];
+    allDatas.forEach((datas) => avg_temperatures.push(datas.avg_temperature.toFixed(2))
+    )
+    var avg_pressures = [];
+    allDatas.forEach((datas) => avg_pressures.push(datas.avg_pressure.toFixed(2))
+    )
+    var avg_windspeeds = [];
+    allDatas.forEach((datas) => avg_windspeeds.push(datas.avg_wind_speed.toFixed(2))
+    )
+    var avg_performances = [];
+    allDatas.forEach((datas) => avg_performances.push(datas.avg_power_output.toFixed(2))
+    )
 
-    datas.timestamp = datas.timestamp.map((timestamp, index) => {
-        if (index % 2 === 0) {
-            return timestamp;
-        } else {
-            return "";
-        }
-    });
+
 </script>
 <script src="/js/dashboard.js"></script>
 {{>scripts}}

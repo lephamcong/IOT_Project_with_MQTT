@@ -36,6 +36,10 @@ class EMQXController {
   async init(req, res) {
     try {
       const message = convertTo_id(req.body); // xử lí lại thành _id
+      // có thay đổi 1 chút ở Model, maintenanceHistory ko truyền lên từ Src nữa
+      // mà sẽ được nhập từ web, nên cần xóa trường maintenanceHistory
+      // ở tin nhắn truyền lên, để tránh bị lỗi
+      delete message.maintenanceHistory;
       await Turbine.updateOne({ _id: message._id }, message);
     } catch (error) {
       console.log(error);

@@ -19,11 +19,8 @@ const Turbine = new Schema(
       type: String,
       enum: ["Active", "Inactive", "Maintenance"],
     },
-    maintenanceHistory: {
-      date: { type: String },
-      description: { type: String },
-    },
+    maintenanceHistory: [ObjectId],
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Turbine", Turbine); // link đến collection cources của thèn database với schema là Course
+module.exports = mongoose.model("Turbine", Turbine);

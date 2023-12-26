@@ -9,6 +9,12 @@ $(document).ready(() => {
       "#E23E3E",
       "Temperature (℃)"
     );
+    updateChartAvg(
+      $chart_avg.data("chart"),
+      dates,
+      avg_temperatures,
+      "#E23E3E"
+    );
   });
   $("#header-pressure-card").on("click", () => {
     currentCardHeader = "pressure";
@@ -19,6 +25,7 @@ $(document).ready(() => {
       "#D96D3E",
       "Pressure (hPa)"
     );
+    updateChartAvg($chart_avg.data("chart"), dates, avg_pressures, "#D96D3E");
   });
 
   $("#header-windspeed-card").on("click", () => {
@@ -30,6 +37,7 @@ $(document).ready(() => {
       "#EFCF2B",
       "Windspeed (m/s)"
     );
+    updateChartAvg($chart_avg.data("chart"), dates, avg_windspeeds, "#EFCF2B");
   });
 
   $("#header-performance-card").on("click", () => {
@@ -40,6 +48,12 @@ $(document).ready(() => {
       datas.power_output,
       "#2BD5EF",
       "Performance (%)"
+    );
+    updateChartAvg(
+      $chart_avg.data("chart"),
+      dates,
+      avg_performances,
+      "#2BD5EF"
     );
   });
 
@@ -62,7 +76,7 @@ $(document).ready(() => {
   $("#customSelect").on("change", function () {
     const selectedDate = $(this).val();
     const selectedIndex = dates.indexOf(selectedDate);
-    datas = datass[selectedIndex];
+    datas = allDatas[selectedIndex];
     updateHeaderValue();
     switch (currentCardHeader) {
       case "temperature":

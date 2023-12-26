@@ -943,22 +943,12 @@ var Charts = (function () {
 // Orders chart
 //
 
-var OrdersChart = (function () {
-  //
-  // Variables
-  //
-
-  var $chart = $("#chart-orders");
+var $chart_avg = $("#chart-data-avg");
+var AvgChart = (function () {
   var $ordersSelect = $('[name="ordersSelect"]');
-
-  //
-  // Methods
-  //
-
-  // Init chart
   function initChart($chart) {
     // Create chart
-    var ordersChart = new Chart($chart, {
+    var avgChart = new Chart($chart, {
       type: "bar",
       options: {
         scales: {
@@ -966,11 +956,9 @@ var OrdersChart = (function () {
             {
               ticks: {
                 callback: function (value) {
-                  if (!(value % 10)) {
-                    //return '$' + value + 'k'
-                    return value;
-                  }
+                  return value;
                 },
+                min: (Math.min(...datas.engineTemperature) - 5).toFixed(1),
               },
             },
           ],
@@ -981,14 +969,12 @@ var OrdersChart = (function () {
               var label = data.datasets[item.datasetIndex].label || "";
               var yLabel = item.yLabel;
               var content = "";
-
               if (data.datasets.length > 1) {
                 content +=
                   '<span class="popover-body-label mr-auto">' +
                   label +
                   "</span>";
               }
-
               content +=
                 '<span class="popover-body-value">' + yLabel + "</span>";
 
@@ -998,23 +984,19 @@ var OrdersChart = (function () {
         },
       },
       data: {
-        labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: dates,
         datasets: [
           {
-            label: "Sales",
-            data: [25, 20, 30, 22, 17, 29],
+            data: avg_temperatures,
+            backgroundColor: "#E23E3E", // Màu của biểu đồ
           },
         ],
       },
     });
-
-    // Save to jQuery object
-    $chart.data("chart", ordersChart);
+    $chart.data("chart", avgChart);
   }
-
-  // Init chart
-  if ($chart.length) {
-    initChart($chart);
+  if ($chart_avg.length) {
+    initChart($chart_avg);
   }
 })();
 
@@ -1049,12 +1031,8 @@ var DataChart = (function () {
                 callback: function (label, index, labels) {
                   return label;
                 },
-                min: (
-                  Math.min(...datas.engineTemperature) - 10
-                ).toFixed(1),
-                max: (
-                  Math.max(...datas.engineTemperature) + 10
-                ).toFixed(1),
+                min: (Math.min(...datas.engineTemperature) - 5).toFixed(1),
+                max: (Math.max(...datas.engineTemperature) + 5).toFixed(1),
               },
             },
           ],
@@ -1074,7 +1052,7 @@ var DataChart = (function () {
               }
 
               content +=
-                '<span class="popover-body-value">' + yLabel + "℃</span>";
+                '<span class="popover-body-value">' + yLabel + "</span>";
               return content;
             },
           },
@@ -1086,7 +1064,7 @@ var DataChart = (function () {
           {
             data: datas.engineTemperature,
             borderColor: "#E23E3E",
-            fill: false,
+            borderWidth: 1,
           },
         ],
       },
@@ -1108,12 +1086,18 @@ function updateChartData(chart, labels, datas, color, newTitle) {
   chart.data.labels = labels;
   chart.data.datasets[0].data = datas;
   chart.data.datasets[0].borderColor = color;
-  chart.options.scales.yAxes[0].ticks.min = (Math.min(...datas) - 10).toFixed(
-    1
-  );
-  chart.options.scales.yAxes[0].ticks.max = (Math.max(...datas) + 10).toFixed(
-    1
-  );
-  $("#dashboard-chart-title").html(newTitle);
+  chart.options.scales.yAxes[0].ticks.min = (Math.min(...datas) - 5).toFixed(1);
+  chart.options.scales.yAxes[0].ticks.max = (Math.max(...datas) + 5).toFixed(1);
+  $(".dashboard-chart-title").html(newTitle);
+  chart.update(); // Cập nhật biểu đồ
+}
+
+function updateChartAvg(chart, labels, avg_datas, color) {
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = avg_datas;
+  chart.data.datasets[0].backgroundColor = color;
+  chart.options.scales.yAxes[0].ticks.min = (
+    Math.min(...avg_datas) - 5
+  ).toFixed(1);
   chart.update(); // Cập nhật biểu đồ
 }
