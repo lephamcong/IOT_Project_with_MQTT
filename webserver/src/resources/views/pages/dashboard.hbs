@@ -242,7 +242,20 @@
 <script>
     var allDatas = {{{ json allDatas }}};
     const dates = allDatas.map(item => item.date);
-    var datas = allDatas[0];
+
+    //Xác định ngày hôm nay và lựa chọn dữ liệu
+    const today = new Date().toLocaleDateString("en-GB");
+    const options = document.getElementById("customSelect").options;
+    let selectedIndex = -1;
+    for (let i = 0; i < options.length; i++) {
+        const optionDate = options[i].value;
+        if (optionDate === today) {
+            options[i].selected = true;
+            selectedIndex = i;
+            datas = allDatas[selectedIndex];
+            break;
+        }
+    }
 
     var avg_temperatures = [];
     allDatas.forEach((datas) => avg_temperatures.push(datas.avg_temperature.toFixed(2))
@@ -260,4 +273,5 @@
 
 </script>
 <script src="/js/dashboard.js"></script>
+<script src="/js/header.js"></script>
 {{>scripts}}

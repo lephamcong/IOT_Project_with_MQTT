@@ -132,5 +132,27 @@ class WebController {
       console.log(error);
     }
   }
+  //[GET] /list
+  async list(req, res) {
+    try {
+      const turbines = multipleMongooseToObject(await Turbine.find({}));
+
+      //Lấy giá trị mới nhất của từng id để đẩy vào header
+      var lastestDatas = [];
+      for (const turbine of turbines) {
+        let lastestData = await Data.find({ turbine_id: turbine._id })
+          .sort({ timestamp: -1 })
+          .limit(1);
+        lastestData = singleMongooseToObject(lastestData[0]);
+        lastestDatas.push(lastestData);
+      }
+      res.render("pages/list", {
+        turbines: turbines,
+        lastestDatas,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 module.exports = new WebController();

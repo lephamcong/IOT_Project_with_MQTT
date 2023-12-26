@@ -28,3 +28,6 @@ select.custom-select::after {
   transform: translateY(-50%);
   color: white;
 }
+.list-turbine-item.active {
+  background-color: rgba(124, 124, 124, 0.13); /* Màu sắc của phần tử con */
+}

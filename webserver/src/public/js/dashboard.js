@@ -1,4 +1,6 @@
 $(document).ready(() => {
+  updateHeaderValue(datas);
+
   var currentCardHeader = "temperature";
   $("#header-temperature-card").on("click", () => {
     currentCardHeader = "temperature";
@@ -57,27 +59,11 @@ $(document).ready(() => {
     );
   });
 
-  function updateHeaderValue() {
-    $("#header-temperature-card .value").html(
-      `${datas.engineTemperature[datas.engineTemperature.length - 1]} ℃`
-    );
-    $("#header-pressure-card .value").html(
-      `${datas.pressure[datas.pressure.length - 1]} hPa`
-    );
-    $("#header-windspeed-card .value").html(
-      `${datas.wind_speed[datas.wind_speed.length - 1]} m/s`
-    );
-    $("#header-performance-card .value").html(
-      `${datas.power_output[datas.power_output.length - 1]} %`
-    );
-  }
-  updateHeaderValue();
-
   $("#customSelect").on("change", function () {
     const selectedDate = $(this).val();
     const selectedIndex = dates.indexOf(selectedDate);
     datas = allDatas[selectedIndex];
-    updateHeaderValue();
+    // updateHeaderValue(datas);
     switch (currentCardHeader) {
       case "temperature":
         updateChartData(
