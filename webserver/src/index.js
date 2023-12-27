@@ -4,6 +4,8 @@ const morgan = require("morgan"); // HTTp logger
 const { engine } = require("express-handlebars"); // handle view
 const route = require("./routes"); //router
 const db = require("./config/db"); // mongo database
+const moment = require("moment");
+
 // connect to mongodb
 db.connect();
 
@@ -20,6 +22,7 @@ app.use(express.json()); //midleware xử lí dữ liệu từ các thư viện 
 app.use(morgan("combined"));
 
 // template engine, render views
+var preVal = 0;
 app.engine(
   "hbs",
   engine({
@@ -29,6 +32,15 @@ app.engine(
       compare: (param1, param2) => param1 === param2,
       json: (context) => JSON.stringify(context),
       last: (arr) => arr[arr.length - 1],
+      convertTime: (timestamp) => {
+        var utcMoment = moment(timestamp, "YYYY-MM-DDTHH:mm:ss.SSSZ");
+        return utcMoment.format("HH:mm:ss");
+      },
+      comparePreVal: (val) => {
+        var compareVal = val - preVal;
+        preVal = val;
+        return compareVal;
+      },
     },
   })
 );

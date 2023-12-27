@@ -2,7 +2,6 @@ const Turbine = require("../models/Turbine");
 const Data = require("../models/Data");
 const Maintenance = require("../models/Maintenance");
 
-var momentTimezone = require("moment-timezone");
 const moment = require("moment");
 
 const {
@@ -24,6 +23,28 @@ class WebController {
   async contact(req, res) {
     try {
       res.render("contact");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //[GET] /list
+  async list(req, res) {
+    try {
+      const turbines = multipleMongooseToObject(await Turbine.find({}));
+
+      //Lấy giá trị mới nhất của từng id để đẩy vào header
+      var lastestDatas = [];
+      for (const turbine of turbines) {
+        let lastestData = await Data.find({ turbine_id: turbine._id })
+          .sort({ timestamp: -1 })
+          .limit(1);
+        lastestData = singleMongooseToObject(lastestData[0]);
+        lastestDatas.push(lastestData);
+      }
+      res.render("pages/list", {
+        turbines: turbines,
+        lastestDatas,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -132,23 +153,66 @@ class WebController {
       console.log(error);
     }
   }
-  //[GET] /list
-  async list(req, res) {
-    try {
-      const turbines = multipleMongooseToObject(await Turbine.find({}));
 
-      //Lấy giá trị mới nhất của từng id để đẩy vào header
-      var lastestDatas = [];
-      for (const turbine of turbines) {
-        let lastestData = await Data.find({ turbine_id: turbine._id })
-          .sort({ timestamp: -1 })
-          .limit(1);
-        lastestData = singleMongooseToObject(lastestData[0]);
-        lastestDatas.push(lastestData);
+  //[GET] /table/:_id
+  async table(req, res) {
+    try {
+      const turbine = await Turbine.findOne({ _id: req.params._id }).exec();
+      const endDate = moment().utc().endOf("day"); // Lấy thời điểm cuối ngày hôm nay ở UTC
+      const startDate = moment().utc().subtract(6, "days").startOf("day"); // Lấy thời điểm đầu ngày của 7 ngày trước ở UTC
+      var arrDate = [];
+
+      //Tìm tất cả dữ liệu của turbine_id
+      var allDatas = await Data.aggregate([
+        {
+          $match: {
+            turbine_id: req.params._id,
+            timestamp: {
+              $gte: new Date(startDate),
+              $lt: new Date(endDate),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%d/%m/%Y", date: "$timestamp" } },
+            data: { $push: "$$ROOT" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            date: "$_id",
+            data: 1,
+          },
+        },
+      ]);
+
+      // Lấy mảng các ngày và sort nó giảm dần
+      allDatas.forEach((allData) => {
+        arrDate.push(allData.date);
+      });
+      function parseDate(str) {
+        var parts = str.split("/");
+        return new Date(parts[2], parts[1] - 1, parts[0]);
       }
-      res.render("pages/list", {
-        turbines: turbines,
-        lastestDatas,
+      arrDate.sort(function (a, b) {
+        return parseDate(b) - parseDate(a);
+      });
+
+      //Tìm dữ liệu theo ngày
+      const dateSelect = req.query.dateSelect || arrDate[0];
+      function findDataByDate(dateToFind) {
+        return allDatas.find(function (data) {
+          return data.date === dateToFind;
+        });
+      }
+      var allData = findDataByDate(dateSelect);
+
+      res.render("pages/table", {
+        turbine: singleMongooseToObject(turbine),
+        arrDate,
+        allData,
       });
     } catch (error) {
       console.log(error);
