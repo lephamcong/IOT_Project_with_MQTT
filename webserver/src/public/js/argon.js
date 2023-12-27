@@ -958,7 +958,7 @@ var AvgChart = (function () {
                 callback: function (value) {
                   return value;
                 },
-                min: (Math.min(...datas.engineTemperature) - 5).toFixed(1),
+                min: (Math.min(...avg_temperatures) - 5).toFixed(1),
               },
             },
           ],

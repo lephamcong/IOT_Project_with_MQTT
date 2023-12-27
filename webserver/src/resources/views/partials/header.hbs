@@ -1,12 +1,15 @@
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
-        <h1 style="display: flex; align-items:center">ID: {{turbine._id}}
+        <div style="display: flex; align-items:center">
+            <h1 id="header-turbine-id">ID: {{turbine._id}}</h1>
             {{#if (compare turbine.statusNetwork "connected")}}
-            <i style="font-size:12px;padding: 0px 20px;color:#27C927" class="fa-solid fa-circle"></i>
+            <i style="font-size:12px;padding: 0px 20px 5px;color:#27C927"
+                class="header-turbine-statusNetwork fa-solid fa-circle"></i>
             {{else}}
-            <i style="font-size:12px;padding: 0px 20px;color:#C92522" class="fa-solid fa-circle"></i>
+            <i style="font-size:12px;padding: 0px 20px 5px;color:#C92522"
+                class="header-turbine-statusNetwork fa-solid fa-circle"></i>
             {{/if}}
-        </h1>
+        </div>
         <div class="header-body">
             <!-- Card stats -->
             <div class="row">
@@ -98,3 +101,6 @@
         </div>
     </div>
 </div>
+<script>
+
+</script>
