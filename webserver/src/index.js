@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const { engine } = require("express-handlebars"); // handle view
 const route = require("./routes"); //router
-const db = require("./config/db"); // mongo database
+const db = require("./config/db.config"); // mongo database
 const moment = require("moment");
 
 // connect to mongodb

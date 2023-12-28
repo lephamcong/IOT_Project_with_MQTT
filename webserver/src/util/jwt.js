@@ -12,7 +12,7 @@ module.exports = {
       },
       process.env.JWT_ACCESS_KEY,
       {
-        expiresIn: "5s",
+        expiresIn: "30m",
       }
     );
   },
@@ -27,6 +27,17 @@ module.exports = {
       process.env.JWT_REFRESH_KEY,
       {
         expiresIn: "365d",
+      }
+    );
+  },
+  generateEmailToken: (email) => {
+    return jwt.sign(
+      {
+        email: email,
+      },
+      process.env.JWT_ACCESS_KEY,
+      {
+        expiresIn: "1m",
       }
     );
   },

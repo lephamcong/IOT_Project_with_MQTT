@@ -4,7 +4,8 @@ const Maintenance = require("../models/Maintenance");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { generateAccessToken } = require("../../util/jwt");
+const { generateAccessToken, generateEmailToken } = require("../../util/jwt");
+const { sendMail } = require("../../util/mailer");
 
 const {
   multipleMongooseToObject,
@@ -15,6 +16,7 @@ class AuthController {
   async loginPage(req, res) {
     res.render("pages/login");
   }
+  //[POST] /auth/login
   async login(req, res) {
     try {
       const user = await User.findOne({
@@ -52,9 +54,11 @@ class AuthController {
       console.log(error);
     }
   }
+  //[GET] auth/register
   async registerPage(req, res) {
     res.render("pages/register");
   }
+  //[POST] auth/register
   async register(req, res) {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -76,6 +80,56 @@ class AuthController {
         msgErr: "Username or email already exists",
       });
     }
+  }
+  //[GET] /auth/forgotpassword
+  async forgotPasswordPage(req, res) {
+    res.render("pages/forgotPassword");
+  }
+  //[POST] /auth/forgotpassword
+  async forgotPassword(req, res) {
+    // const salt = await bcrypt.genSalt(10);
+    // const emailHashed = await bcrypt.hash(req.body.email, salt);
+    const emailToken = generateEmailToken(req.body.email);
+    sendMail(
+      req.body.email,
+      "Forgot Password",
+      `<a href="${process.env.APP_URL}/auth/resetpassword?email=${req.body.email}&token=${emailToken}"> Verify your email and reset your password </a>`
+    );
+    res.render("pages/forgotPassword", {
+      msgSuccess: "Success! Check your email within 1 minute",
+    });
+  }
+  //[GET] /auth/resetpassword
+  async resetPasswordPage(req, res) {
+    const email = req.query.email;
+    const token = req.query.token;
+    async function verifyEmail(email, token) {
+      return await bcrypt.compare(email, token);
+    }
+    if (token) {
+      jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, email) => {
+        if (err)
+          return res.render("pages/forgotPassword", {
+            msgErr: "Your session has expired! Resend Email",
+          });
+        else {
+          const validEmail = verifyEmail(email, token);
+          if (!validEmail)
+            return res.render("pages/forgotPassword", {
+              msgErr: "Email is incorrect! Give it back please",
+            });
+          else res.render("pages/resetPassword");
+        }
+      });
+    } else {
+      return res.render("pages/forgotPassword", {
+        msgErr: "You are accessing illegally",
+      });
+    }
+  }
+  //[POST] /auth/resetpassword
+  async resetPassword(req, res) {
+    console.log(req.body);
   }
 }
 module.exports = new AuthController();
