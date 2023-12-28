@@ -87,8 +87,6 @@ class AuthController {
   }
   //[POST] /auth/forgotpassword
   async forgotPassword(req, res) {
-    // const salt = await bcrypt.genSalt(10);
-    // const emailHashed = await bcrypt.hash(req.body.email, salt);
     const emailToken = generateEmailToken(req.body.email);
     sendMail(
       req.body.email,
@@ -101,20 +99,15 @@ class AuthController {
   }
   //[GET] /auth/resetpassword
   async resetPasswordPage(req, res) {
-    const email = req.query.email;
     const token = req.query.token;
-    async function verifyEmail(email, token) {
-      return await bcrypt.compare(email, token);
-    }
     if (token) {
-      jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, email) => {
+      jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, result) => {
         if (err)
           return res.render("pages/forgotPassword", {
             msgErr: "Your session has expired! Resend Email",
           });
         else {
-          const validEmail = verifyEmail(email, token);
-          if (!validEmail)
+          if (result.email !== req.query.email)
             return res.render("pages/forgotPassword", {
               msgErr: "Email is incorrect! Give it back please",
             });
@@ -129,7 +122,22 @@ class AuthController {
   }
   //[POST] /auth/resetpassword
   async resetPassword(req, res) {
-    console.log(req.body);
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hashed = await bcrypt.hash(req.body.password, salt);
+      //update password
+      const user = await User.findOneAndUpdate(
+        { email: req.body.email },
+        { password: hashed }
+      );
+      if (!user)
+        return res.render("pages/resetPassword", {
+          msgErr: "Email not found",
+        });
+      res.render("pages/login", {
+        msgSuccess: "Password changed successfully !",
+      });
+    } catch (error) {}
   }
 }
 module.exports = new AuthController();
