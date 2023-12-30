@@ -218,5 +218,13 @@ class WebController {
       console.log(error);
     }
   }
+  //[GET] /profile
+  async about(req, res) {
+    try {
+      res.render("pages/about");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 module.exports = new WebController();

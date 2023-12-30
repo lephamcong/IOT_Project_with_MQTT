@@ -17,6 +17,8 @@ router.post(
   webcontroller.maintenance
 );
 router.get("/table/:_id", authMiddleware.verifyToken, webcontroller.table);
-router.get("/", webcontroller.home);
+router.get("/", authMiddleware.verifyToken, webcontroller.about);
+
+// router.get("/", webcontroller.home);
 
 module.exports = router;

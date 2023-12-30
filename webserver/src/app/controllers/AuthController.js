@@ -47,7 +47,8 @@ class AuthController {
           samSite: "strict",
         });
         const { password, ...other } = user._doc; // xóa password trong response
-        res.redirect("/list");
+        const currentUser = user.username;
+        res.render("pages/about", { currentUser: currentUser });
         return;
       }
     } catch (error) {
@@ -137,6 +138,14 @@ class AuthController {
       res.render("pages/login", {
         msgSuccess: "Password changed successfully !",
       });
+    } catch (error) {}
+  }
+
+  //[GET] /auth/logout
+  async logout(req, res) {
+    try {
+      res.clearCookie("accessToken");
+      res.redirect("/auth/login");
     } catch (error) {}
   }
 }

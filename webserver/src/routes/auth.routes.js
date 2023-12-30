@@ -10,7 +10,7 @@ router.get("/forgotpassword", authController.forgotPasswordPage);
 router.post("/forgotpassword", authController.forgotPassword);
 router.get("/resetpassword", authController.resetPasswordPage);
 router.post("/resetpassword", authController.resetPassword);
-
+router.get("/logout", authController.logout);
 // router.post("/", emqxController.home);
 
 module.exports = router;
