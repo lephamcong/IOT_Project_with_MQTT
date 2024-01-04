@@ -1,4 +1,5 @@
 const mqtt = require("mqtt"); // thư viện mqtt
+const { updateCSV } = require("./turbinesInformation");
 const opt = require("minimist")(process.argv.slice(2)); // thư viện dùng cho lấy arguments
 // Lấy Arguments từ lệnh nhập terminal
 opt.submode = opt.submode || false;
@@ -16,14 +17,14 @@ const {
 } = require("./dataset"); //lấy dữ liệu mô phỏng bên file dataset.js
 
 const protocol = "mqtt";
-const host = "emqx@49.236.210.65";
+const host = "49.236.210.65";
 const port = "1883";
+const brokerUrl = `${protocol}://emqx@${host}:${port}/mqtt`;
 
 // Array lưu giá trị các clients được trả về từ hàm connectToClients()
 let clients = [];
 let failedClients = 0;
 
-const brokerUrl = `${protocol}://${host}:${port}`; // Config link broker, nếu nó chạy trên 1 host khác chung 1 LAN
 // const brokerUrl = "ws://emqx@127.0.0.1:8083/mqtt"; // Config link broker, nếu nó chạy trên chính 1 host đó
 // const subtopic = "/sub";
 const pubtopic = "/pub";
@@ -82,13 +83,14 @@ const startApp = async () => {
           client.on("message", (topic, payload) => {
             let objMessage = JSON.parse(payload.toString()); //chuyển payload nhận được thành string
             //update các trạng thái hoạt động khi nhận được message điều khiển.
-            for (const key in objMessage) {
-              if (clientDatas[client.index].hasOwnProperty(key)) {
-                clientDatas[client.index][key] = objMessage[key];
-              }
-            }
-            // console.log(objMessage.key);
-            // console.log(client.index, objMessage);
+            // for (const key in objMessage) {
+            //   if (clientDatas[client.index].hasOwnProperty(key)) {
+            //     clientDatas[client.index][key] = objMessage[key];
+            //   }
+            // }
+
+            console.log(client.index, objMessage);
+            updateCSV(objMessage);
           })
         );
         console.log("Subscribe successfully!");
@@ -112,7 +114,7 @@ const connectToClients = (clientID) =>
 
 const clientSubscribe = (c) => {
   //các clients sub các topic theo chính ID của nó, VD: /stations01
-  const subtopic = "/" + clientDatas[c.index].clientID;
+  const subtopic = "/control/" + clientDatas[c.index].clientID;
   c.subscribe([subtopic], (err) => {});
 };
 

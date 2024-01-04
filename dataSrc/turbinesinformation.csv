@@ -1,12 +1,12 @@
 _id,location.address,location.coordinates[0],location.coordinates[1],power,installed_date,operatingStatus,maintenanceHistory.date,maintenanceHistory.description
 QN001,123 Main St,12.345,67.89,100,1/1/2023,Active,2/1/2023,Routine maintenance
-QN002,456 Oak St,23.456,78.901,150,2/1/2023,Inactive,3/1/2023,Minor repair
-QN003,789 Pine St,34.567,89.012,120,3/1/2023,Active,4/1/2023,Major repair
-QN004,234 Elm St,45.678,90.123,200,4/1/2023,Inactive,5/1/2023,Regular checkup
+QN002,456 Oak St,23.456,78.901,150,2/1/2023,Active,3/1/2023,Minor repair
+QN003,789 Pine St,34.567,89.012,120,3/1/2023,Inactive,4/1/2023,Major repair
+QN004,234 Elm St,45.678,90.123,200,4/1/2023,Active,5/1/2023,Regular checkup
 QN005,567 Maple St,56.789,91.234,180,5/1/2023,Active,6/1/2023,Minor repair
-QN006,890 Birch St,67.89,92.345,250,6/1/2023,Inactive,7/1/2023,Replacement of parts
+QN006,890 Birch St,67.89,92.345,250,6/1/2023,Active,7/1/2023,Replacement of parts
 QN007,123 Pine St,78.901,12.345,130,7/1/2023,Active,8/1/2023,Regular checkup
-QN008,456 Cedar St,89.012,23.456,170,8/1/2023,Inactive,9/1/2023,Major repair
+QN008,456 Cedar St,89.012,23.456,170,8/1/2023,Active,9/1/2023,Major repair
 QN009,789 Walnut St,90.123,34.567,220,9/1/2023,Active,10/1/2023,Minor repair
 QN010,234 Chestnut St,91.234,45.678,160,10/1/2023,Inactive,11/1/2023,Routine maintenance
 QN011,567 Willow St,92.345,56.789,190,11/1/2023,Active,12/1/2023,Replacement of parts
