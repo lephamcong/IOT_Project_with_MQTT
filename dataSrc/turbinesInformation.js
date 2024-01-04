@@ -2,6 +2,7 @@ const turbinesInformations = [];
 
 const fs = require("fs");
 const { parse } = require("csv-parse");
+const readline = require("readline");
 
 const readTurbinesInformation = () => {
   return new Promise((resolve, reject) => {
@@ -50,4 +51,30 @@ function formatRow(row) {
   return formattedRow;
 }
 
-module.exports = { readTurbinesInformation };
+const updateCSV = (value) => {
+  // Đọc từng dòng của file
+  const rl = readline.createInterface({
+    input: fs.createReadStream("./turbinesInformation.csv"),
+    output: process.stdout,
+    terminal: false,
+  });
+  const lines = [];
+  rl.on("line", (line) => {
+    // Chia dòng thành các trường bằng dấu phẩy
+    const row = line.split(",");
+    // Kiểm tra nếu _id trùng khớp với idToChange
+    if (row[0] === value.turbine_id) {
+      // Sửa giá trị của cột operatingStatus
+      row[6] = value.operatingStatus;
+    }
+    // Ghi lại dòng đã sửa vào mảng lines
+    lines.push(row.join(","));
+  });
+
+  rl.on("close", () => {
+    // Ghi mảng lines vào file hiện tại
+    fs.writeFileSync("./turbinesInformation.csv", lines.join("\n"), "utf-8");
+  });
+};
+
+module.exports = { readTurbinesInformation, updateCSV };

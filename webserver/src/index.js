@@ -1,9 +1,12 @@
 const path = require("path"); // lấy đường dẫn thư mục
 const express = require("express");
 const morgan = require("morgan"); // HTTp logger
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+
 const { engine } = require("express-handlebars"); // handle view
 const route = require("./routes"); //router
-const db = require("./config/db"); // mongo database
+const db = require("./config/db.config"); // mongo database
 const moment = require("moment");
 
 // connect to mongodb
@@ -17,6 +20,8 @@ app.use(express.static(staticPath)); //static file
 
 app.use(express.urlencoded({ extended: true })); //midleware xử lí submit từ thẻ dạng form phía html và chuyển vào req.body
 app.use(express.json()); //midleware xử lí dữ liệu từ các thư viện javascript (XMLhttpRequest, fetch, axios, ...)
+app.use(cors());
+app.use(cookieParser());
 
 // HTTp logger
 app.use(morgan("combined"));

@@ -169,18 +169,24 @@
                                         Status
                                     </th>
                                     {{#if (compare turbine.operatingStatus "Active")}}
-                                    <td style="color: #2FBD2C;">
+                                    <td class="d-flex  align-items-center" style="color: #2FBD2C;">
                                         {{turbine.operatingStatus}}
+                                        <input checked type="checkbox" id="switch" /><label class="mt-1 mb-1 ml-3"
+                                            id="sw-label" for="switch"></label>
                                     </td>
                                     {{/if}}
                                     {{#if (compare turbine.operatingStatus "Inactive")}}
-                                    <td style="color: #BA2020;">
+                                    <td class="d-flex  align-items-center" style="color: #BA2020;">
                                         {{turbine.operatingStatus}}
+                                        <input type="checkbox" id="switch" /><label class="mt-1 mb-1 ml-3" id="sw-label"
+                                            for="switch"></label>
                                     </td>
                                     {{/if}}
                                     {{#if (compare turbine.operatingStatus "Maintenance")}}
-                                    <td style="color: #BABA20;">
+                                    <td class="d-flex  align-items-center" style="color: #BABA20;">
                                         {{turbine.operatingStatus}}
+                                        <input type="checkbox" id="switch" /><label class="mt-1 mb-1 ml-3" id="sw-label"
+                                            for="switch"></label>
                                     </td>
                                     {{/if}}
                                 </tr>

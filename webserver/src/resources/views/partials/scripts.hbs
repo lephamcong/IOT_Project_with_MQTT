@@ -7,3 +7,9 @@
 <script src="/vendor/chart.js/dist/Chart.extension.js"></script>
 <!-- Argon JS -->
 <script src="/js/argon.js"></script>
+<script>
+    var currentUser = localStorage.getItem("currentUser");
+    $(document).ready(() => {
+        $("#currentUser").html(`Hi, ${currentUser}`);
+    })
+</script>

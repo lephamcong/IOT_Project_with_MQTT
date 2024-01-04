@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
+
 async function connect() {
   try {
-    await mongoose.connect("mongodb://49.236.210.65:9002/MQTT");
+    await mongoose.connect(process.env.MONGODB_URL);
     console.log("MongoDB Connect Successfully!!!");
   } catch (error) {
     console.log("MongoDB Connect ERROR!!!", error);
